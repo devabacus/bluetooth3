@@ -47,6 +47,7 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
                     trailing: Text("${scanResult.rssi}"),
                     // onTap: () => selectedDevice.selectDevice(device),
                     onTap: () {
+                       selectedDevice.selectDevice(device);
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => CharPage()),
                       );
@@ -76,7 +77,7 @@ class CharPage extends ConsumerWidget {
     return Scaffold(
       body: Center(
         child: rxChar.when(
-          data: (val) => Text(val.toString(), style: TextStyle(fontSize: 20),),
+          data: (val) => Text(String.fromCharCodes(val), style: TextStyle(fontSize: 30),),
           error: (_, __) => Text("Error"),
           loading: () => CircularProgressIndicator(),
         ),
