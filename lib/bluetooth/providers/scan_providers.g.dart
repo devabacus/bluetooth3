@@ -25,7 +25,27 @@ final requestBlePermissionsProvider = AutoDisposeFutureProvider<void>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RequestBlePermissionsRef = AutoDisposeFutureProviderRef<void>;
-String _$scanResultsHash() => r'9fd449b1af26b6ee91737dff5d5156c69ae7743e';
+String _$bleAdapterStateHash() => r'286f60d46f6b4a1aa9450b095d51e8e88f08f208';
+
+/// See also [bleAdapterState].
+@ProviderFor(bleAdapterState)
+final bleAdapterStateProvider =
+    AutoDisposeStreamProvider<BluetoothAdapterState>.internal(
+      bleAdapterState,
+      name: r'bleAdapterStateProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$bleAdapterStateHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef BleAdapterStateRef =
+    AutoDisposeStreamProviderRef<BluetoothAdapterState>;
+String _$scanResultsHash() => r'a2bcac3271c7a428a7c137d1d3d2caffb47c1eb7';
 
 /// See also [ScanResults].
 @ProviderFor(ScanResults)

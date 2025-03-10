@@ -12,12 +12,22 @@ class ScanPage extends ConsumerStatefulWidget {
 
 class _ScannerPageState extends ConsumerState<ScanPage> {
 
-    final scanResults = ref.watch(scanResultsProvider);
-    final scanController = ref.read(scanResultsProvider.notifier);
+@override
+  void initState() {
+    _startScan();
+    super.initState();
+  }
 
+Future<void> _startScan() async {
+    final scanController = ref.read(scanResultsProvider.notifier);
+    await scanController.startScan();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final scanResults = ref.watch(scanResultsProvider);
+    final scanController = ref.read(scanResultsProvider.notifier);
+
     return Scaffold(
       body: Center(
         child: scanResults.when(
@@ -46,7 +56,7 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: scanController.startScan,
-        child: Icon(Icons.scanner),
+        child: Icon(Icons.update),
       ),
     );
   }
