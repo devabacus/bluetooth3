@@ -62,7 +62,7 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$selectedDeviceHash() => r'303f9365095b667ace8558a67ee02ab4f959ace3';
+String _$selectedDeviceHash() => r'3a7cbe14b328494e31c8b7f1fd9f55b368a94ae1';
 
 /// See also [SelectedDevice].
 @ProviderFor(SelectedDevice)
@@ -79,7 +79,7 @@ final selectedDeviceProvider =
     );
 
 typedef _$SelectedDevice = AutoDisposeNotifier<BluetoothDevice?>;
-String _$rxCharacteristicHash() => r'8a1fd0e730a1f7ecdc5105dfafd372a7bc7a3935';
+String _$rxCharacteristicHash() => r'ad24f7530ff2c57aef1d65537323d7b7853ac3c4';
 
 /// See also [RxCharacteristic].
 @ProviderFor(RxCharacteristic)
@@ -96,5 +96,24 @@ final rxCharacteristicProvider =
     );
 
 typedef _$RxCharacteristic = AutoDisposeStreamNotifier<List<int>>;
+String _$txCharacteristicHash() => r'8d86250f5ded7d4fe3875e3cd122945491b2f266';
+
+/// See also [TxCharacteristic].
+@ProviderFor(TxCharacteristic)
+final txCharacteristicProvider = AutoDisposeNotifierProvider<
+  TxCharacteristic,
+  BluetoothCharacteristic?
+>.internal(
+  TxCharacteristic.new,
+  name: r'txCharacteristicProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$txCharacteristicHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$TxCharacteristic = AutoDisposeNotifier<BluetoothCharacteristic?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -64,9 +64,9 @@ class SelectedDevice extends _$SelectedDevice {
     if (service != null) {
       final chars = getCharacteristic(service);
       final rxCharProvider = ref.read(rxCharacteristicProvider.notifier);
-      if (chars['rx'] != null) {
-        rxCharProvider.setChar(chars['rx']!);
-      }
+      final txCharProvider = ref.read(txCharacteristicProvider.notifier);
+      rxCharProvider.setChar(chars['rx']!);
+      txCharProvider.setChar(chars['tx']!);
     }
 
     state = device;
@@ -107,5 +107,19 @@ class RxCharacteristic extends _$RxCharacteristic {
   }
 }
 
+@riverpod
+class TxCharacteristic extends _$TxCharacteristic {
+  
+  @override
+  BluetoothCharacteristic? build() {
+    return null;
+  }
 
-     
+  void setChar(BluetoothCharacteristic char) {
+    state = char;
+  }
+
+  Future<void> writeToTx(String val) async {
+    await state!.write(val.codeUnits);
+  }
+}

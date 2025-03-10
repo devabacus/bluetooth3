@@ -47,7 +47,7 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
                     trailing: Text("${scanResult.rssi}"),
                     // onTap: () => selectedDevice.selectDevice(device),
                     onTap: () {
-                       selectedDevice.selectDevice(device);
+                      selectedDevice.selectDevice(device);
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => CharPage()),
                       );
@@ -67,19 +67,48 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
   }
 }
 
-class CharPage extends ConsumerWidget {
+class CharPage extends ConsumerStatefulWidget {
   const CharPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _CharPageState();
+}
+
+class _CharPageState extends ConsumerState<CharPage> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     final rxChar = ref.watch(rxCharacteristicProvider);
+    final txChar = ref.read(txCharacteristicProvider.notifier);
 
     return Scaffold(
       body: Center(
-        child: rxChar.when(
-          data: (val) => Text(String.fromCharCodes(val), style: TextStyle(fontSize: 30),),
-          error: (_, __) => Text("Error"),
-          loading: () => CircularProgressIndicator(),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width*0.8,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              rxChar.when(
+                data:
+                    (val) => Text(
+                      String.fromCharCodes(val),
+                      style: TextStyle(fontSize: 30),
+                    ),
+                error: (_, __) => Text("Error"),
+                loading: () => CircularProgressIndicator(),
+              ),
+              TextField(controller: _controller, decoration: InputDecoration(),),
+              SizedBox(height: 30,),
+              ElevatedButton(
+                onPressed: () {
+                  String msg = _controller.text.trim();
+                  txChar.writeToTx(msg);
+                },
+                child: Text("отправить"),
+              ),
+            ],
+          ),
         ),
       ),
     );
