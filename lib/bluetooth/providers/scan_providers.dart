@@ -61,34 +61,44 @@ class SelectedDevice extends _$SelectedDevice {
     } catch (e) {
       print("wrong device");
     }
-    if (service != null) {}
+    if (service != null) {
+      final chars = getCharacteristic(service);
+      final rxCharProvider = ref.read(rxCharacteristicProvider.notifier);
+      rxCharProvider.setChar(chars['rx']);
+    }
 
     state = device;
   }
 
-  void getCharacteristic(BluetoothService service) {
+  Map<String, BluetoothCharacteristic> getCharacteristic(
+    BluetoothService service,
+  ) {
     final charList = service.characteristics;
-    BluetoothCharacteristic rx;
-    BluetoothCharacteristic tx;
+    BluetoothCharacteristic? rx;
+    BluetoothCharacteristic? tx;
     for (var char in charList) {
-      if (char.uuid.toString() == BleUuids.rxChar) {
+      if (char.uuid.toString().toLowerCase() == BleUuids.rxChar.toLowerCase()) {
         rx = char;
       }
-      if (char.uuid.toString() == BleUuids.txChar) {
+      if (char.uuid.toString().toLowerCase() == BleUuids.txChar.toLowerCase()) {
         tx = char;
       }
     }
+
+    return {'rx': rx!, 'tx': tx!};
   }
 }
 
 @riverpod
 class RxCharacteristic extends _$RxCharacteristic {
+  BluetoothCharacteristic? _char;
   @override
   Stream<List<int>> build() {
-    return Stream.value([]);
+    return _char?.onValueReceived??Stream.value([]);
   }
 
   void setChar(BluetoothCharacteristic char) {
-    state = char;
+    _char = char;
+    state = char.onValueReceived;
   }
 }
