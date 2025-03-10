@@ -2,14 +2,22 @@ import 'package:bluetooth3/bluetooth/providers/scan_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScanPage extends ConsumerWidget {
+
+class ScanPage extends ConsumerStatefulWidget {
   const ScanPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ScannerPageState();
+}
+
+class _ScannerPageState extends ConsumerState<ScanPage> {
+
     final scanResults = ref.watch(scanResultsProvider);
     final scanController = ref.read(scanResultsProvider.notifier);
 
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: scanResults.when(
