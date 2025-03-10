@@ -15,6 +15,7 @@ class ScanPage extends ConsumerWidget {
         child: scanResults.when(
           data:
               (results) => ListView.builder(
+                itemCount: results.length,
                 itemBuilder: (context, index) {
                   final scanResult = results[index];
                   final device = scanResult.device;
@@ -22,7 +23,7 @@ class ScanPage extends ConsumerWidget {
                       device.advName.isEmpty
                           ? "Неизвестное устройство"
                           : device.advName;
-        
+
                   return ListTile(
                     title: Text(deviceName),
                     subtitle: Text("${device.remoteId}"),
