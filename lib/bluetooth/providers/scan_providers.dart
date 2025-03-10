@@ -64,13 +64,15 @@ class SelectedDevice extends _$SelectedDevice {
     if (service != null) {
       final chars = getCharacteristic(service);
       final rxCharProvider = ref.read(rxCharacteristicProvider.notifier);
-      rxCharProvider.setChar(chars['rx']);
+      if (chars['rx'] != null) {
+        rxCharProvider.setChar(chars['rx']!);
+      }
     }
 
     state = device;
   }
 
-  Map<String, BluetoothCharacteristic> getCharacteristic(
+  Map<String, BluetoothCharacteristic?> getCharacteristic(
     BluetoothService service,
   ) {
     final charList = service.characteristics;
@@ -85,7 +87,7 @@ class SelectedDevice extends _$SelectedDevice {
       }
     }
 
-    return {'rx': rx!, 'tx': tx!};
+    return {'rx': rx, 'tx': tx};
   }
 }
 
@@ -94,11 +96,12 @@ class RxCharacteristic extends _$RxCharacteristic {
   BluetoothCharacteristic? _char;
   @override
   Stream<List<int>> build() {
-    return _char?.onValueReceived??Stream.value([]);
+    return _char?.onValueReceived ?? Stream.value([]);
   }
 
   void setChar(BluetoothCharacteristic char) {
+    if (char == null) return;
     _char = char;
-    state = char.onValueReceived;
+    ref.invalidateSelf();
   }
 }
