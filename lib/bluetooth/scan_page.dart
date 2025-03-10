@@ -27,6 +27,8 @@ Future<void> _startScan() async {
   Widget build(BuildContext context) {
     final scanResults = ref.watch(scanResultsProvider);
     final scanController = ref.read(scanResultsProvider.notifier);
+    final selectedDevice = ref.read(selectedDeviceProvider.notifier);
+
 
     return Scaffold(
       body: Center(
@@ -46,7 +48,7 @@ Future<void> _startScan() async {
                     title: Text(deviceName),
                     subtitle: Text("${device.remoteId}"),
                     trailing: Text("${scanResult.rssi}"),
-                    onTap: () => print('${device.advName} connected'),
+                    onTap: () => selectedDevice.selectDevice(device),
                   );
                 },
               ),

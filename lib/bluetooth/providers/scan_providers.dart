@@ -34,4 +34,14 @@ class ScanResults extends _$ScanResults {
   }
 }
 
+@riverpod
+class SelectedDevice extends _$SelectedDevice {
+  @override
+  BluetoothDevice? build() {
+    return null;
+  }
 
+  void selectDevice(BluetoothDevice device) {
+    state = device;
+  }
+}
