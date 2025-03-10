@@ -4,6 +4,10 @@ flutter pub cache clean
 flutter clean
 flutter pub get
 
+flutter pub add flutter_blue_plus
+flutter pub add permission_handler
+
+
 
 flutter pub add flutter_riverpod riverpod_annotation hooks_riverpod freezed_annotation json_annotation go_router
 flutter pub add --dev riverpod_generator build_runner custom_lint riverpod_lint freezed json_serializable
