@@ -72,7 +72,7 @@ class SelectedDevice extends _$SelectedDevice {
     state = device;
   }
 
-  Map<String, BluetoothCharacteristic?> getCharacteristic(
+  Map<String, BluetoothCharacteristic> getCharacteristic(
     BluetoothService service,
   ) {
     final charList = service.characteristics;
@@ -87,7 +87,7 @@ class SelectedDevice extends _$SelectedDevice {
       }
     }
 
-    return {'rx': rx, 'tx': tx};
+    return {'rx': rx!, 'tx': tx!};
   }
 }
 
@@ -100,7 +100,6 @@ class RxCharacteristic extends _$RxCharacteristic {
   }
 
   void setChar(BluetoothCharacteristic char) {
-    if (char == null) return;
     _char = char;
     ref.invalidateSelf();
   }
