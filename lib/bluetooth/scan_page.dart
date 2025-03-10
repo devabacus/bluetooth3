@@ -2,7 +2,6 @@ import 'package:bluetooth3/bluetooth/providers/scan_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class ScanPage extends ConsumerStatefulWidget {
   const ScanPage({super.key});
 
@@ -11,14 +10,13 @@ class ScanPage extends ConsumerStatefulWidget {
 }
 
 class _ScannerPageState extends ConsumerState<ScanPage> {
-
-@override
+  @override
   void initState() {
     _startScan();
     super.initState();
   }
 
-Future<void> _startScan() async {
+  Future<void> _startScan() async {
     final scanController = ref.read(scanResultsProvider.notifier);
     await scanController.startScan();
   }
@@ -28,7 +26,6 @@ Future<void> _startScan() async {
     final scanResults = ref.watch(scanResultsProvider);
     final scanController = ref.read(scanResultsProvider.notifier);
     final selectedDevice = ref.read(selectedDeviceProvider.notifier);
-
 
     return Scaffold(
       body: Center(
@@ -48,7 +45,12 @@ Future<void> _startScan() async {
                     title: Text(deviceName),
                     subtitle: Text("${device.remoteId}"),
                     trailing: Text("${scanResult.rssi}"),
-                    onTap: () => selectedDevice.selectDevice(device),
+                    // onTap: () => selectedDevice.selectDevice(device),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CharPage()),
+                      );
+                    },
                   );
                 },
               ),
@@ -59,6 +61,25 @@ Future<void> _startScan() async {
       floatingActionButton: FloatingActionButton(
         onPressed: scanController.startScan,
         child: Icon(Icons.update),
+      ),
+    );
+  }
+}
+
+class CharPage extends ConsumerWidget {
+  const CharPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final rxChar = ref.watch(rxCharacteristicProvider);
+
+    return Scaffold(
+      body: Center(
+        child: rxChar.when(
+          data: (val) => Text(val.toString(), style: TextStyle(fontSize: 20),),
+          error: (_, __) => Text("Error"),
+          loading: () => CircularProgressIndicator(),
+        ),
       ),
     );
   }

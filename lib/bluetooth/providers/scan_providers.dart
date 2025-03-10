@@ -101,6 +101,11 @@ class RxCharacteristic extends _$RxCharacteristic {
 
   void setChar(BluetoothCharacteristic char) {
     _char = char;
+    _char!.setNotifyValue(true);
+
     ref.invalidateSelf();
   }
 }
+
+
+     

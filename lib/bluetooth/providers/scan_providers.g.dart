@@ -62,7 +62,7 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$selectedDeviceHash() => r'f7f7fb5e48b31b4760e656c674c7a099fb10e825';
+String _$selectedDeviceHash() => r'303f9365095b667ace8558a67ee02ab4f959ace3';
 
 /// See also [SelectedDevice].
 @ProviderFor(SelectedDevice)
@@ -79,7 +79,7 @@ final selectedDeviceProvider =
     );
 
 typedef _$SelectedDevice = AutoDisposeNotifier<BluetoothDevice?>;
-String _$rxCharacteristicHash() => r'e90b74735373e670dcb4b08da1801f4d79b67a93';
+String _$rxCharacteristicHash() => r'8a1fd0e730a1f7ecdc5105dfafd372a7bc7a3935';
 
 /// See also [RxCharacteristic].
 @ProviderFor(RxCharacteristic)
