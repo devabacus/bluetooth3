@@ -112,6 +112,8 @@ class TxCharacteristic extends _$TxCharacteristic {
   
   @override
   BluetoothCharacteristic? build() {
+    ref.keepAlive();
+
     return null;
   }
 
