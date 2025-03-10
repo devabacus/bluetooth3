@@ -6,21 +6,24 @@ import 'package:permission_handler/permission_handler.dart';
 part 'scan_providers.g.dart';
 
 
-@riverpod
-Stream<BluetoothAdapterState> adapterState(Ref ref) {
-  return FlutterBluePlus.adapterState;
-}
 
+@riverpod
+Future<void> requestBlePermissions(Ref ref) async {
+  await Permission.bluetoothScan.request();
+  await Permission.bluetoothConnect.request();
+  await Permission.location.request();
+}
 
 @riverpod
 class ScanResults extends _$ScanResults {
   @override
   Stream<List<ScanResult>> build() {
-    return FlutterBluePlus.onScanResults;
+    ref.watch(requestBlePermissionsProvider);
+    return FlutterBluePlus.scanResults;
   }
 
   Future<void> startScan() async {
-      FlutterBluePlus.startScan();
+      FlutterBluePlus.startScan(timeout: Duration(seconds:10));
   }
 }
 

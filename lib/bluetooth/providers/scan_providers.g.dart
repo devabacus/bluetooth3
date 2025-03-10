@@ -6,26 +6,26 @@ part of 'scan_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adapterStateHash() => r'e558cadae25b2d629876da5a2175a9e1731b4d34';
+String _$requestBlePermissionsHash() =>
+    r'd1dbca468b40c90620f6514964d7bf1d79a051b7';
 
-/// See also [adapterState].
-@ProviderFor(adapterState)
-final adapterStateProvider =
-    AutoDisposeStreamProvider<BluetoothAdapterState>.internal(
-      adapterState,
-      name: r'adapterStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$adapterStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+/// See also [requestBlePermissions].
+@ProviderFor(requestBlePermissions)
+final requestBlePermissionsProvider = AutoDisposeFutureProvider<void>.internal(
+  requestBlePermissions,
+  name: r'requestBlePermissionsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$requestBlePermissionsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AdapterStateRef = AutoDisposeStreamProviderRef<BluetoothAdapterState>;
-String _$scanResultsHash() => r'7c23b1d3cf22dd0c50526e409f098b244b8eb26e';
+typedef RequestBlePermissionsRef = AutoDisposeFutureProviderRef<void>;
+String _$scanResultsHash() => r'9fd449b1af26b6ee91737dff5d5156c69ae7743e';
 
 /// See also [ScanResults].
 @ProviderFor(ScanResults)
