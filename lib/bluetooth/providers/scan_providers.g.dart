@@ -62,7 +62,7 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$selectedDeviceHash() => r'5a7c2b5a68d5e17f377a5001c92865cda88d7a8a';
+String _$selectedDeviceHash() => r'f7f7fb5e48b31b4760e656c674c7a099fb10e825';
 
 /// See also [SelectedDevice].
 @ProviderFor(SelectedDevice)
@@ -79,5 +79,22 @@ final selectedDeviceProvider =
     );
 
 typedef _$SelectedDevice = AutoDisposeNotifier<BluetoothDevice?>;
+String _$rxCharacteristicHash() => r'e90b74735373e670dcb4b08da1801f4d79b67a93';
+
+/// See also [RxCharacteristic].
+@ProviderFor(RxCharacteristic)
+final rxCharacteristicProvider =
+    AutoDisposeStreamNotifierProvider<RxCharacteristic, List<int>>.internal(
+      RxCharacteristic.new,
+      name: r'rxCharacteristicProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$rxCharacteristicHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$RxCharacteristic = AutoDisposeStreamNotifier<List<int>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

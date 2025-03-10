@@ -1,9 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'scan_providers.g.dart';
+
+class BleUuids {
+  static const String serviceUuid = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  static const String txChar = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  static const String rxChar = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+}
 
 @riverpod
 Future<void> requestBlePermissions(Ref ref) async {
@@ -41,7 +48,47 @@ class SelectedDevice extends _$SelectedDevice {
     return null;
   }
 
-  void selectDevice(BluetoothDevice device) {
+  void selectDevice(BluetoothDevice device) async {
+    await device.connect();
+    final services = await device.discoverServices();
+    BluetoothService? service;
+    try {
+      service = services.firstWhere(
+        (service) =>
+            service.serviceUuid.toString().toLowerCase() ==
+            BleUuids.serviceUuid.toLowerCase(),
+      );
+    } catch (e) {
+      print("wrong device");
+    }
+    if (service != null) {}
+
     state = device;
+  }
+
+  void getCharacteristic(BluetoothService service) {
+    final charList = service.characteristics;
+    BluetoothCharacteristic rx;
+    BluetoothCharacteristic tx;
+    for (var char in charList) {
+      if (char.uuid.toString() == BleUuids.rxChar) {
+        rx = char;
+      }
+      if (char.uuid.toString() == BleUuids.txChar) {
+        tx = char;
+      }
+    }
+  }
+}
+
+@riverpod
+class RxCharacteristic extends _$RxCharacteristic {
+  @override
+  Stream<List<int>> build() {
+    return Stream.value([]);
+  }
+
+  void setChar(BluetoothCharacteristic char) {
+    state = char;
   }
 }
