@@ -27,7 +27,7 @@ class ScanPage extends ConsumerWidget {
                   return ListTile(
                     title: Text(deviceName),
                     subtitle: Text("${device.remoteId}"),
-                    trailing: Text("${device.readRssi}"),
+                    trailing: Text("${scanResult.rssi}"),
                     onTap: () => print('${device.advName} connected'),
                   );
                 },
