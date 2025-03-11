@@ -14,8 +14,11 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
 
   @override
   void initState() {
-    checkAutoConnect();
-    _startScan();
+    checkAutoConnect().then((_) {
+      if (!_deviceConnected) {
+        _startScan();
+      }
+    });
     super.initState();
   }
 
@@ -31,11 +34,30 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
 
       setState(() {
         _deviceConnected = autoConnectSucces;
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => CharPage()),
+            );
+          }
+        });
       });
     } else {
+
+         WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => CharPage()),
+          );
+        }
+      });
+
+
+
       _deviceConnected = true;
     }
-    _deviceConnected = connectionState;
+    // _deviceConnected = connectionState;
   }
 
   Future<void> _startScan() async {
