@@ -111,7 +111,7 @@ class SelectedDevice extends _$SelectedDevice {
       return false;
     }
     try {
-      _connectToDevice(device);
+      await _connectToDevice(device);
       return true;
     } catch (e) {
       print('$e error');

@@ -23,6 +23,18 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
     final connectionState = await ref.read(
       deviceConnectionStateProvider.future,
     );
+
+    if (!connectionState) {
+      final selectedDeviceNotifier = ref.read(selectedDeviceProvider.notifier);
+      final autoConnectSucces =
+          await selectedDeviceNotifier.connectToSavedDevice();
+
+      setState(() {
+        _deviceConnected = autoConnectSucces;
+      });
+    } else {
+      _deviceConnected = true;
+    }
     _deviceConnected = connectionState;
   }
 
@@ -38,7 +50,7 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
     final selectedDevice = ref.read(selectedDeviceProvider.notifier);
     if (_deviceConnected) {
       Navigator.of(
-          context,
+        context,
       ).push(MaterialPageRoute(builder: (context) => CharPage()));
     }
 
