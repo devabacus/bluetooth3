@@ -43,6 +43,10 @@ class ScanResults extends _$ScanResults {
 }
 
 @riverpod
+
+
+
+
 class SelectedDevice extends _$SelectedDevice {
   @override
   BluetoothDevice? build() {
@@ -50,8 +54,10 @@ class SelectedDevice extends _$SelectedDevice {
   }
 
   void selectDevice(BluetoothDevice device) async {
+    
     await device.connect(autoConnect: true);
     final services = await device.discoverServices();
+    
     BluetoothService? service;
     try {
       service = services.firstWhere(
