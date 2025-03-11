@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+
 part 'scan_providers.g.dart';
 
 class BleUuids {
@@ -49,7 +50,7 @@ class SelectedDevice extends _$SelectedDevice {
   }
 
   void selectDevice(BluetoothDevice device) async {
-    await device.connect();
+    await device.connect(autoConnect: true);
     final services = await device.discoverServices();
     BluetoothService? service;
     try {

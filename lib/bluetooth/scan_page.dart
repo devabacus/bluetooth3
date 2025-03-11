@@ -106,6 +106,7 @@ class _CharPageState extends ConsumerState<CharPage> {
                   txChar.writeToTx(msg);
                 },
                 child: Text("отправить"),
+                
               ),
             ],
           ),
@@ -114,3 +115,4 @@ class _CharPageState extends ConsumerState<CharPage> {
     );
   }
 }
+
