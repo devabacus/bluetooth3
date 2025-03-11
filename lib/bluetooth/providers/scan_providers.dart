@@ -26,6 +26,15 @@ Stream<BluetoothAdapterState> bleAdapterState(Ref ref) {
 }
 
 @riverpod
+Stream<bool> deviceConnectionState(Ref ref) {
+  final device = ref.watch(selectedDeviceProvider);
+  if (device == null) {
+    return Stream.value(false);
+  }
+  return device.connectionState.map((val)=>BluetoothConnectionState.connected==val);
+}
+
+@riverpod
 class ScanResults extends _$ScanResults {
   @override
   Stream<List<ScanResult>> build() {
@@ -57,7 +66,6 @@ class SavedDevice extends _$SavedDevice {
   }
 }
 
-
 @riverpod
 class SelectedDevice extends _$SelectedDevice {
   @override
@@ -66,7 +74,6 @@ class SelectedDevice extends _$SelectedDevice {
   }
 
   Future<void> _connectToDevice(BluetoothDevice device) async {
-    
     await device.connect(autoConnect: true);
     final services = await device.discoverServices();
 
@@ -87,31 +94,28 @@ class SelectedDevice extends _$SelectedDevice {
       rxCharProvider.setChar(chars['rx']!);
       txCharProvider.setChar(chars['tx']!);
     }
-      state = device;
-
+    state = device;
   }
 
   Future<void> selectDevice(BluetoothDevice device) async {
-    
-
-    _connectToDevice(device);
+    await _connectToDevice(device);
 
     final savedDevice = ref.read(savedDeviceProvider.notifier);
     savedDevice.saveDevice(device.remoteId.toString());
   }
 
-  Future<void> connectToSavedDevice() async {
-
+  Future<bool> connectToSavedDevice() async {
     final remoteId = await ref.read(savedDeviceProvider.future);
     final device = BluetoothDevice.fromId(remoteId);
     if (remoteId.isEmpty) {
-      return;
+      return false;
     }
     try {
-        _connectToDevice(device);
-        
+      _connectToDevice(device);
+      return true;
     } catch (e) {
-        print('$e error');
+      print('$e error');
+      return false;
     }
   }
 

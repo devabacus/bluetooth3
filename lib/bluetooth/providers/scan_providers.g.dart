@@ -45,6 +45,25 @@ final bleAdapterStateProvider =
 // ignore: unused_element
 typedef BleAdapterStateRef =
     AutoDisposeStreamProviderRef<BluetoothAdapterState>;
+String _$deviceConnectionStateHash() =>
+    r'949fd1089b5c0afc8763cad43da7c12a54979d60';
+
+/// See also [deviceConnectionState].
+@ProviderFor(deviceConnectionState)
+final deviceConnectionStateProvider = AutoDisposeStreamProvider<bool>.internal(
+  deviceConnectionState,
+  name: r'deviceConnectionStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$deviceConnectionStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef DeviceConnectionStateRef = AutoDisposeStreamProviderRef<bool>;
 String _$scanResultsHash() => r'a2bcac3271c7a428a7c137d1d3d2caffb47c1eb7';
 
 /// See also [ScanResults].
@@ -62,7 +81,7 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$savedDeviceHash() => r'1d58d7cba5529b666c0cd42e9c235ab243f4946b';
+String _$savedDeviceHash() => r'd2cd440db9cafe116df98a879ffe6ab3f74feb68';
 
 /// See also [SavedDevice].
 @ProviderFor(SavedDevice)
@@ -79,7 +98,7 @@ final savedDeviceProvider =
     );
 
 typedef _$SavedDevice = AutoDisposeAsyncNotifier<String>;
-String _$selectedDeviceHash() => r'89a9d16c6067a73342513754e92e33afd2bd2a1b';
+String _$selectedDeviceHash() => r'3197a39d786f649dd71cfe38c2e928cbc051e465';
 
 /// See also [SelectedDevice].
 @ProviderFor(SelectedDevice)

@@ -10,10 +10,20 @@ class ScanPage extends ConsumerStatefulWidget {
 }
 
 class _ScannerPageState extends ConsumerState<ScanPage> {
+  bool _deviceConnected = false;
+
   @override
   void initState() {
+    checkAutoConnect();
     _startScan();
     super.initState();
+  }
+
+  Future<void> checkAutoConnect() async {
+    final connectionState = await ref.read(
+      deviceConnectionStateProvider.future,
+    );
+    _deviceConnected = connectionState;
   }
 
   Future<void> _startScan() async {
@@ -26,6 +36,11 @@ class _ScannerPageState extends ConsumerState<ScanPage> {
     final scanResults = ref.watch(scanResultsProvider);
     final scanController = ref.read(scanResultsProvider.notifier);
     final selectedDevice = ref.read(selectedDeviceProvider.notifier);
+    if (_deviceConnected) {
+      Navigator.of(
+          context,
+      ).push(MaterialPageRoute(builder: (context) => CharPage()));
+    }
 
     return Scaffold(
       body: Center(
@@ -85,7 +100,7 @@ class _CharPageState extends ConsumerState<CharPage> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width*0.8,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -98,15 +113,14 @@ class _CharPageState extends ConsumerState<CharPage> {
                 error: (_, __) => Text("Error"),
                 loading: () => CircularProgressIndicator(),
               ),
-              TextField(controller: _controller, decoration: InputDecoration(),),
-              SizedBox(height: 30,),
+              TextField(controller: _controller, decoration: InputDecoration()),
+              SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
                   String msg = _controller.text.trim();
                   txChar.writeToTx(msg);
                 },
                 child: Text("отправить"),
-                
               ),
             ],
           ),
@@ -115,4 +129,3 @@ class _CharPageState extends ConsumerState<CharPage> {
     );
   }
 }
-
