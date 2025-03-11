@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Интерактивная Mermaid диаграмма</title>
+  <!-- Подключение библиотеки Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <!-- Ваша диаграмма -->
+  <pre class="mermaid">
+    flowchart LR
+        A-->B
+        B-->C
+        C-->D
+        click A callback "Tooltip для A"
+        click B "https://www.github.com" "Это ссылка на GitHub"
+        click C call callback() "Всплывающая подсказка"
+        click D href "https://www.github.com" "Это тоже ссылка"
+  </pre>
+
+  <script>
+    // Определяем функцию обратного вызова
+    window.callback = function () {
+      alert('Колбэк был вызван!');
+    };
+    
+    // Конфигурация Mermaid
+    const config = {
+      startOnLoad: true,
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'cardinal' },
+      securityLevel: 'loose', // Важно для работы колбэков!
+    };
+    
+    // Инициализация Mermaid с нашей конфигурацией
+    mermaid.initialize(config);
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'scan_providers.g.dart';
 
@@ -43,21 +43,33 @@ class ScanResults extends _$ScanResults {
 }
 
 @riverpod
+class SavedDevice extends _$SavedDevice {
+  @override
+  FutureOr<String> build() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getString('remoteId') ?? "";
+  }
+
+  Future<bool> saveDevice(String remoteId) async {
+    final pref = await SharedPreferences.getInstance();
+    state = AsyncData(remoteId);
+    return await pref.setString('remoteId', remoteId);
+  }
+}
 
 
-
-
+@riverpod
 class SelectedDevice extends _$SelectedDevice {
   @override
   BluetoothDevice? build() {
     return null;
   }
 
-  void selectDevice(BluetoothDevice device) async {
+  Future<void> _connectToDevice(BluetoothDevice device) async {
     
     await device.connect(autoConnect: true);
     final services = await device.discoverServices();
-    
+
     BluetoothService? service;
     try {
       service = services.firstWhere(
@@ -75,8 +87,32 @@ class SelectedDevice extends _$SelectedDevice {
       rxCharProvider.setChar(chars['rx']!);
       txCharProvider.setChar(chars['tx']!);
     }
+      state = device;
 
-    state = device;
+  }
+
+  Future<void> selectDevice(BluetoothDevice device) async {
+    
+
+    _connectToDevice(device);
+
+    final savedDevice = ref.read(savedDeviceProvider.notifier);
+    savedDevice.saveDevice(device.remoteId.toString());
+  }
+
+  Future<void> connectToSavedDevice() async {
+
+    final remoteId = await ref.read(savedDeviceProvider.future);
+    final device = BluetoothDevice.fromId(remoteId);
+    if (remoteId.isEmpty) {
+      return;
+    }
+    try {
+        _connectToDevice(device);
+        
+    } catch (e) {
+        print('$e error');
+    }
   }
 
   Map<String, BluetoothCharacteristic> getCharacteristic(
@@ -116,7 +152,6 @@ class RxCharacteristic extends _$RxCharacteristic {
 
 @riverpod
 class TxCharacteristic extends _$TxCharacteristic {
-  
   @override
   BluetoothCharacteristic? build() {
     ref.keepAlive();

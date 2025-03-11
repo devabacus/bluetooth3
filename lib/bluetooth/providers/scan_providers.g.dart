@@ -62,7 +62,24 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$selectedDeviceHash() => r'3a7cbe14b328494e31c8b7f1fd9f55b368a94ae1';
+String _$savedDeviceHash() => r'1d58d7cba5529b666c0cd42e9c235ab243f4946b';
+
+/// See also [SavedDevice].
+@ProviderFor(SavedDevice)
+final savedDeviceProvider =
+    AutoDisposeAsyncNotifierProvider<SavedDevice, String>.internal(
+      SavedDevice.new,
+      name: r'savedDeviceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$savedDeviceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$SavedDevice = AutoDisposeAsyncNotifier<String>;
+String _$selectedDeviceHash() => r'89a9d16c6067a73342513754e92e33afd2bd2a1b';
 
 /// See also [SelectedDevice].
 @ProviderFor(SelectedDevice)
@@ -96,7 +113,7 @@ final rxCharacteristicProvider =
     );
 
 typedef _$RxCharacteristic = AutoDisposeStreamNotifier<List<int>>;
-String _$txCharacteristicHash() => r'8d86250f5ded7d4fe3875e3cd122945491b2f266';
+String _$txCharacteristicHash() => r'efc8f782cda6b5d56163f455ae4162e727261374';
 
 /// See also [TxCharacteristic].
 @ProviderFor(TxCharacteristic)
